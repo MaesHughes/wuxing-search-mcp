@@ -1,0 +1,18 @@
+# SearXNG 配置文件 - Wuxing Search
+use_default_settings: true
+general:
+  instance_name: "Wuxing Search"
+server:
+  port: 8080
+  bind_address: "0.0.0.0"
+  secret_key: "wuxing-search-secret-key-change-in-production"
+  limiter: false
+  public_instance: false
+  method: "POST"
+  image_proxy: false
+search:
+  formats:
+    - html
+    - json
+    - csv
+  max_results: 20

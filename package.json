@@ -1,0 +1,48 @@
+{
+  "name": "@your-username/wuxing-search-mcp",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "基于 SearXNG 的无限制搜索 MCP Server，专为课程开发场景设计",
+  "main": "src/index.js",
+  "bin": {
+    "wuxing-search": "./src/index.js"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "install:mcp": "npm install",
+    "install:all": "npm run install:mcp && npm run setup:searxng",
+    "setup:searxng": "docker run -d -p 8888:8080 -v \"%cd%/searxng/config:/etc/searxng/\" -v \"%cd%/searxng/data:/var/cache/searxng/\" --restart unless-stopped --name wuxing-searxng searxng/searxng:latest",
+    "start:searxng": "docker start wuxing-searxng",
+    "stop:searxng": "docker stop wuxing-searxng",
+    "restart:searxng": "docker restart wuxing-searxng",
+    "logs:searxng": "docker logs -f wuxing-searxng",
+    "status:searxng": "docker ps | findstr wuxing-searxng",
+    "test:searxng": "curl http://localhost:8888/search?q=test&format=json"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "search",
+    "searxng",
+    "claude",
+    "ai",
+    "课程开发"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/wuxing-search-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/wuxing-search-mcp/issues"
+  },
+  "homepage": "https://github.com/your-username/wuxing-search-mcp#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.25.3",
+    "axios": "^1.13.2"
+  }
+}

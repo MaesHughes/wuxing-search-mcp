@@ -1,0 +1,51 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# SearXNG data (cache and temporary files)
+searxng/data/
+searxng/cache/
+
+# SearXNG limiter database
+searxng/limiter.sqlite
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# MCP configuration (user-specific)
+.mcp-config.json
+
+# Claude/Project internal files
+.claude/
+
+# Build output
+dist/
+build/
+
+# Temporary files
+*.tmp
+*.temp
+NUL
+
+# Development files
+QUICKSTART.md
+opensource/
+D:indieHackerAItools-seriesMCPwuxing-searchsearxng-config.json
