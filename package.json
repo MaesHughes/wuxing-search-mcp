@@ -1,5 +1,5 @@
 {
-  "name": "@your-username/wuxing-search-mcp",
+  "name": "@maeshughes/wuxing-search-mcp",
   "version": "1.0.0",
   "type": "module",
   "description": "基于 SearXNG 的无限制搜索 MCP Server，专为课程开发场景设计",
