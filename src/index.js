@@ -138,6 +138,10 @@ async function searchWithSearXNG(params) {
   }
 
   try {
+    console.error(`[DEBUG] 搜索参数:`, JSON.stringify(searchParams));
+    console.error(`[DEBUG] 请求URL: ${CONFIG.searxngUrl}/search`);
+    console.error(`[DEBUG] 超时设置: ${CONFIG.timeout}ms`);
+
     const response = await axios.get(`${CONFIG.searxngUrl}/search`, {
       params: searchParams,
       timeout: CONFIG.timeout,
@@ -146,6 +150,9 @@ async function searchWithSearXNG(params) {
         'User-Agent': 'Wuxing-Search-MCP/1.0',
       },
     });
+
+    console.error(`[DEBUG] 响应状态: ${response.status}`);
+    console.error(`[DEBUG] 结果数量: ${response.data.results?.length || 0}`);
 
     // 处理返回结果
     const results = response.data.results || [];
