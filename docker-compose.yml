@@ -5,7 +5,7 @@ services:
     image: searxng/searxng:latest
     container_name: wuxing-searxng
     ports:
-      - "8888:8080"
+      - "18080:8080"
     volumes:
       - ./searxng/config:/etc/searxng/
       - ./searxng/data:/var/cache/searxng/

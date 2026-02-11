@@ -19,7 +19,7 @@ import axios from 'axios';
 
 const CONFIG = {
   // SearXNG 服务地址
-  searxngUrl: process.env.SEARXNG_URL || 'http://localhost:8888',
+  searxngUrl: process.env.SEARXNG_URL || 'http://localhost:18080',
   // 默认搜索结果数量
   maxResults: parseInt(process.env.MAX_RESULTS) || 20,
   // 默认超时时间（毫秒）

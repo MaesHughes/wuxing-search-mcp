@@ -155,7 +155,7 @@ npm install
 docker run -d \
   --name wuxing-searxng \
   --restart unless-stopped \
-  -p 8888:8080 \
+  -p 18080:8080 \
   -v "$(pwd)/searxng/config:/etc/searxng/" \
   -v "$(pwd)/searxng/data:/var/cache/searxng/" \
   searxng/searxng:latest
@@ -190,7 +190,7 @@ Add the following configuration (update the path to your actual project location
       "command": "node",
       "args": ["D:\\path\\to\\wuxing-search-mcp\\src\\index.js"],
       "env": {
-        "SEARXNG_URL": "http://localhost:8888",
+        "SEARXNG_URL": "http://localhost:18080",
         "MAX_RESULTS": "20",
         "TIMEOUT": "30000"
       }
@@ -347,7 +347,7 @@ Configure the MCP Server through environment variables:
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `SEARXNG_URL` | SearXNG service address | http://localhost:8888 |
+| `SEARXNG_URL` | SearXNG service address | http://localhost:18080 |
 | `MAX_RESULTS` | Default number of results | 20 |
 | `TIMEOUT` | Request timeout (ms) | 30000 |
 
@@ -368,7 +368,7 @@ Add these variables in the `env` field of your Claude Code configuration.
 
 2. ✅ Is SearXNG service healthy?
    ```bash
-   curl http://localhost:8888
+   curl http://localhost:18080
    ```
 
 3. ✅ Is config file path correct (use absolute path)?
@@ -384,13 +384,13 @@ Add these variables in the `env` field of your Claude Code configuration.
 
 **Check:**
 
-1. Is port 8888 occupied?
+1. Is port 18080 occupied?
    ```bash
    # Windows
-   netstat -ano | findstr :8888
+   netstat -ano | findstr :18080
 
    # Linux/Mac
-   lsof -ti:8888
+   lsof -ti:18080
    ```
 
 2. Is Docker service running?
@@ -447,7 +447,7 @@ docker restart wuxing-searxng
 ### SearXNG (Python/Docker)
 
 - **Image:** searxng/searxng:latest
-- **Port:** 8888 (host) → 8080 (container)
+- **Port:** 18080 (host) → 8080 (container)
 - **Config:** searxng/config/settings.yml
 - **Data:** searxng/data/ (cache)
 - **Role:** Aggregate 100+ search engines

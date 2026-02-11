@@ -147,7 +147,7 @@ function Start-SearXNG {
 docker run -d `
     --name wuxing-searxng `
     --restart unless-stopped `
-    -p 8888:8080 `
+    -p 18080:8080 `
     -v "${ConfigDirWin}:/etc/searxng/" `
     -v "${DataDirWin}:/var/cache/searxng/" `
     searxng/searxng:latest
@@ -168,11 +168,11 @@ docker run -d `
 
     # 测试服务
     try {
-        $response = Invoke-WebRequest -Uri "http://localhost:8888" -UseBasicParsing -TimeoutSec 5 -ErrorAction Stop
-        Print-Success "SearXNG 服务运行正常 (http://localhost:8888)"
+        $response = Invoke-WebRequest -Uri "http://localhost:18080" -UseBasicParsing -TimeoutSec 5 -ErrorAction Stop
+        Print-Success "SearXNG 服务运行正常 (http://localhost:18080)"
     } catch {
         Print-Warning "SearXNG 服务可能需要更多时间启动"
-        Print-Info "请稍后手动测试: curl http://localhost:8888"
+        Print-Info "请稍后手动测试: curl http://localhost:18080"
     }
 
     Write-Host ""
@@ -204,7 +204,7 @@ function Show-ConfigGuide {
       "command": "node",
       "args": ["$McpServerPath"],
       "env": {
-        "SEARXNG_URL": "http://localhost:8888"
+        "SEARXNG_URL": "http://localhost:18080"
       }
     }
   }
@@ -246,7 +246,7 @@ function Show-ManagementCommands {
   docker start wuxing-searxng
 
 测试搜索服务:
-  curl http://localhost:8888/search?q=test&format=json
+  curl http://localhost:18080/search?q=test&format=json
 
 "@ -ForegroundColor White
 }

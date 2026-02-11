@@ -155,7 +155,7 @@ npm install
 docker run -d \
   --name wuxing-searxng \
   --restart unless-stopped \
-  -p 8888:8080 \
+  -p 18080:8080 \
   -v "$(pwd)/searxng/config:/etc/searxng/" \
   -v "$(pwd)/searxng/data:/var/cache/searxng/" \
   searxng/searxng:latest
@@ -190,7 +190,7 @@ docker-compose up -d
       "command": "node",
       "args": ["D:\\path\\to\\wuxing-search-mcp\\src\\index.js"],
       "env": {
-        "SEARXNG_URL": "http://localhost:8888",
+        "SEARXNG_URL": "http://localhost:18080",
         "MAX_RESULTS": "20",
         "TIMEOUT": "30000"
       }
@@ -347,7 +347,7 @@ docker stop wuxing-searxng && docker rm wuxing-searxng
 
 | 变量 | 说明 | 默认值 |
 |------|------|--------|
-| `SEARXNG_URL` | SearXNG 服务地址 | http://localhost:8888 |
+| `SEARXNG_URL` | SearXNG 服务地址 | http://localhost:18080 |
 | `MAX_RESULTS` | 默认返回结果数 | 20 |
 | `TIMEOUT` | 请求超时时间（毫秒） | 30000 |
 
@@ -368,7 +368,7 @@ docker stop wuxing-searxng && docker rm wuxing-searxng
 
 2. ✅ SearXNG 服务是否正常？
    ```bash
-   curl http://localhost:8888
+   curl http://localhost:18080
    ```
 
 3. ✅ 配置文件路径是否正确（使用绝对路径）？
@@ -384,13 +384,13 @@ docker stop wuxing-searxng && docker rm wuxing-searxng
 
 **检查：**
 
-1. 端口 8888 是否被占用？
+1. 端口 18080 是否被占用？
    ```bash
    # Windows
-   netstat -ano | findstr :8888
+   netstat -ano | findstr :18080
 
    # Linux/Mac
-   lsof -ti:8888
+   lsof -ti:18080
    ```
 
 2. Docker 服务是否运行？
@@ -447,7 +447,7 @@ docker restart wuxing-searxng
 ### SearXNG（Python/Docker）
 
 - **镜像**：searxng/searxng:latest
-- **端口**：8888（主机）→ 8080（容器）
+- **端口**：18080（主机）→ 8080（容器）
 - **配置**：searxng/config/settings.yml
 - **数据**：searxng/data/（缓存）
 - **作用**：聚合 100+ 搜索引擎

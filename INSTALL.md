@@ -65,7 +65,7 @@ chmod +x install.sh
       "command": "node",
       "args": ["D:\\path\\to\\wuxing-search-mcp\\src\\index.js"],
       "env": {
-        "SEARXNG_URL": "http://localhost:8888"
+        "SEARXNG_URL": "http://localhost:18080"
       }
     }
   }
@@ -112,7 +112,7 @@ docker-compose up -d
 docker run -d \
   --name wuxing-searxng \
   --restart unless-stopped \
-  -p 8888:8080 \
+  -p 18080:8080 \
   -v "$(pwd)/searxng/config:/etc/searxng/" \
   -v "$(pwd)/searxng/data:/var/cache/searxng/" \
   searxng/searxng:latest
@@ -122,7 +122,7 @@ docker run -d \
 
 ```bash
 # 检查 SearXNG
-curl http://localhost:8888
+curl http://localhost:18080
 
 # 检查 MCP Server
 echo '{"jsonrpc":"2.0","id":1,"method":"tools/list"}' | node src/index.js
@@ -211,27 +211,27 @@ docker stop wuxing-searxng && docker rm wuxing-searxng
 docker-compose up -d
 
 # 或使用 Docker 命令
-docker run -d --name wuxing-searxng -p 8888:8080 \
+docker run -d --name wuxing-searxng -p 18080:8080 \
   -v "$(pwd)/searxng/config:/etc/searxng/" \
   -v "$(pwd)/searxng/data:/var/cache/searxng/" \
   searxng/searxng:latest
 ```
 
-### 问题 3：端口 8888 被占用
+### 问题 3：端口 18080 被占用
 
 **症状**：
 ```
-Error: port 8888 already in use
+Error: port 18080 already in use
 ```
 
 **解决方案**：
 ```bash
 # Windows
-netstat -ano | findstr :8888
+netstat -ano | findstr :18080
 # 找到进程 PID 后，taskkill /PID <pid> /F
 
 # Linux/Mac
-lsof -ti:8888 | xargs kill -9
+lsof -ti:18080 | xargs kill -9
 
 # 或修改端口
 docker run -d --name wuxing-searxng -p 9999:8080 ...
@@ -244,7 +244,7 @@ docker run -d --name wuxing-searxng -p 9999:8080 ...
 
 **检查清单**：
 1. ✅ SearXNG 容器是否运行：`docker ps | grep wuxing-searxng`
-2. ✅ SearXNG 服务是否正常：`curl http://localhost:8888`
+2. ✅ SearXNG 服务是否正常：`curl http://localhost:18080`
 3. ✅ 配置文件路径是否正确（使用绝对路径）
 4. ✅ Node.js 版本是否 >= 18：`node --version`
 5. ✅ Claude Code 是否重启
