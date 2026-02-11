@@ -178,13 +178,20 @@ async function searchWithSearXNG(params) {
       answers: answers.length > 0 ? answers : undefined,
     };
   } catch (error) {
-    // 详细错误信息
+    // 详细错误信息 - 捕获所有可能的错误字段
+    console.error('[ERROR] 完整错误对象:', JSON.stringify(error, null, 2));
+    console.error('[ERROR] error.message:', error.message);
+    console.error('[ERROR] error.code:', error.code);
+    console.error('[ERROR] error.response:', JSON.stringify(error.response));
+    console.error('[ERROR] error.request:', JSON.stringify(error.request));
+
     const errorDetails = {
       message: error.message,
       code: error.code,
       status: error.response?.status,
       statusText: error.response?.statusText,
       data: error.response?.data,
+      stack: error.stack,
     };
     throw new Error(`搜索失败: ${JSON.stringify(errorDetails)}`);
   }
