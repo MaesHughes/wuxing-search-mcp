@@ -178,22 +178,15 @@ async function searchWithSearXNG(params) {
       answers: answers.length > 0 ? answers : undefined,
     };
   } catch (error) {
-    // 详细错误信息 - 捕获所有可能的错误字段
-    console.error('[ERROR] 完整错误对象:', JSON.stringify(error, null, 2));
-    console.error('[ERROR] error.message:', error.message);
-    console.error('[ERROR] error.code:', error.code);
-    console.error('[ERROR] error.response:', JSON.stringify(error.response));
-    console.error('[ERROR] error.request:', JSON.stringify(error.request));
-
-    const errorDetails = {
+    // 安全的错误信息（避免循环引用）
+    const safeError = {
       message: error.message,
       code: error.code,
       status: error.response?.status,
-      statusText: error.response?.statusText,
-      data: error.response?.data,
-      stack: error.stack,
+      stack: error.stack?.split('\n')?.slice(0, 3)?.join('\n'),
     };
-    throw new Error(`搜索失败: ${JSON.stringify(errorDetails)}`);
+    console.error('[ERROR] 搜索失败:', JSON.stringify(safeError));
+    throw new Error(`搜索失败: ${error.message} (${error.code || 'UNKNOWN'})`);
   }
 }
 
@@ -336,10 +329,13 @@ async function main() {
   await server.connect(transport);
 
   // stderr 输出启动信息（不影响 MCP 通信）
+  console.error('='.repeat(50));
   console.error('Wuxing Search MCP Server 已启动');
+  console.error(`环境变量 SEARXNG_URL: ${process.env.SEARXNG_URL || '未设置'}`);
   console.error(`后端 SearXNG 地址: ${CONFIG.searxngUrl}`);
   console.error(`最大结果数: ${CONFIG.maxResults}`);
   console.error(`超时时间: ${CONFIG.timeout}ms`);
+  console.error('='.repeat(50));
 }
 
 main().catch((error) => {
