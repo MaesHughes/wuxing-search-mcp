@@ -42,7 +42,7 @@ const TOOLS = [
 - query: 搜索关键词（必需）
 - max_results: 返回结果数量，默认 20，最大 100
 - category: 搜索类别，可选值：general, images, videos, files, it, map, music, science, social, news
-- language: 搜索语言，默认 zh-CN
+- language: 搜索语言代码（如：zh、en、all），默认 all
 - time_range: 时间范围，可选值：day, week, month, year, none（默认）
 - safesearch: 安全搜索级别，可选值：0, 1, 2（默认 1）
 
@@ -171,7 +171,15 @@ async function searchWithSearXNG(params) {
       answers: answers.length > 0 ? answers : undefined,
     };
   } catch (error) {
-    throw new Error(`搜索失败: ${error.message}`);
+    // 详细错误信息
+    const errorDetails = {
+      message: error.message,
+      code: error.code,
+      status: error.response?.status,
+      statusText: error.response?.statusText,
+      data: error.response?.data,
+    };
+    throw new Error(`搜索失败: ${JSON.stringify(errorDetails)}`);
   }
 }
 
