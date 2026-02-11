@@ -206,7 +206,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           query: args.query,
           max_results: args.max_results || 20,
           category: args.category || 'general',
-          language: args.language || 'zh-CN',
+          language: args.language || 'all',
           time_range: args.time_range || 'none',
           safesearch: args.safesearch || 1,
         };
