@@ -3,23 +3,23 @@
 </p>
 
 <p align="center">
-  <a href="README.zh-CN.md">
+  <a href="README.en.md">
     <b>English | 中文</b>
   </a>
 </p>
 
 <p align="center">
-  <strong>Compatible with Claude Code, Cursor, Windsurf, and other AI-powered IDEs</strong>
+  <strong>兼容 Claude Code、Cursor、Windsurf 和其他 AI 驱动的 IDE</strong>
 </p>
 
 <h1 align="center">Wuxing Search MCP</h1>
 
 <p align="center">
-  <i>Unlimited Search MCP Server Powered by SearXNG</i>
+  <i>基于 SearXNG 的无限制搜索 MCP Server</i>
 </p>
 
 <p align="center">
-  <strong>A powerful, unlimited search server that aggregates 100+ search engines</strong>
+  <strong>一个强大的无限制搜索服务器，聚合 100+ 搜索引擎</strong>
 </p>
 
 <p align="center">
@@ -35,121 +35,121 @@
 </p>
 
 <p align="center">
-  <a href="#-features">Features</a> •
-  <a href="#-quick-start">Quick Start</a> •
-  <a href="#-installation">Installation</a> •
-  <a href="#-usage">Usage</a> •
-  <a href="#-management">Management</a> •
-  <a href="#-troubleshooting">Troubleshooting</a>
+  <a href="#-功能特点">功能特点</a> •
+  <a href="#-快速开始">快速开始</a> •
+  <a href="#-安装">安装</a> •
+  <a href="#-使用方法">使用方法</a> •
+  <a href="#-管理命令">管理命令</a> •
+  <a href="#-故障排查">故障排查</a>
 </p>
 
 ---
 
-## What is Wuxing Search MCP?
+## 什么是 Wuxing Search MCP？
 
-**Wuxing Search MCP** is a powerful, unlimited search server built on top of [SearXNG](https://searxng.org/). It integrates seamlessly with [Claude Code](https://claude.ai/code) via the Model Context Protocol, providing free and unlimited search capabilities by aggregating results from 100+ search engines.
+**Wuxing Search MCP** 是一个基于 [SearXNG](https://searxng.org/) 构建的强大无限制搜索服务器。它通过模型上下文协议与 [Claude Code](https://claude.ai/code) 无缝集成，通过聚合 100+ 搜索引擎的结果，提供免费且无限制的搜索能力。
 
-### Why Wuxing Search?
+### 为什么选择 Wuxing Search？
 
-Traditional search APIs have limitations:
-- ❌ Rate limits and quotas
-- ❌ Expensive API costs
-- ❌ Single source results
+传统搜索 API 存在限制：
+- ❌ 速率限制和配额
+- ❌ 昂贵的 API 成本
+- ❌ 单一来源的结果
 
-**Wuxing Search solves all of this:**
-- ✅ **Completely Free** - Self-hosted SearXNG, no API costs
-- ✅ **Unlimited Searches** - Rate limiter disabled for high-frequency searching
-- ✅ **Multi-Source Aggregation** - Google, Bing, DuckDuckGo, Brave, and 100+ engines
-- ✅ **Privacy Friendly** - No tracking, no logging
-- ✅ **MCP Integrated** - Perfect for Claude Code workflow
+**Wuxing Search 解决了所有这些问题：**
+- ✅ **完全免费** - 自建 SearXNG，无 API 成本
+- ✅ **无限制搜索** - 禁用速率限制器，支持高频搜索
+- ✅ **多源聚合** - Google、Bing、DuckDuckGo、Brave 等 100+ 引擎
+- ✅ **隐私友好** - 无追踪，无记录
+- ✅ **MCP 集成** - 完美适配 Claude Code 工作流
 
 ---
 
-## Architecture
+## 架构说明
 
 ```
 ┌─────────────┐      ┌──────────────┐      ┌─────────────┐      ┌─────────────┐
-│  You        │ ───▶ │ Claude Code │ ───▶ │ Wuxing      │ ───▶ │  SearXNG    │
-│  (User)     │      │  (MCP Client) │      │ Search MCP   │      │ (Docker)    │
+│  你        │ ───▶ │ Claude Code │ ───▶ │ Wuxing      │ ───▶ │  SearXNG    │
+│  (用户)    │      │  (MCP 客户端) │      │ Search MCP   │      │ (Docker)    │
 └─────────────┘      └──────────────┘      │ (Node.js)   │      │ (Python)    │
                                             └──────────────┘      └─────────────┘
                                                     │
                                                     ▼
                                             ┌───────────────────────────┐
-                                            │   Search Engine Aggregator│
+                                            │   搜索引擎聚合           │
                                             │   - Google               │
                                             │   - Bing                 │
                                             │   - DuckDuckGo           │
                                             │   - Brave                │
                                             │   - Wikipedia            │
-                                            │   - And 100+ more...     │
+                                            │   - 以及 100+ 更多...    │
                                             └───────────────────────────┘
 ```
 
 ---
 
-## Features
+## 功能特点
 
-### ✨ Current Features
+### ✨ 当前功能
 
-- **🔍 Unlimited Web Search**
-  - No API rate limits or quotas
-  - Support for high-frequency searching
-  - Configurable result count (1-100)
+- **🔍 无限制网页搜索**
+  - 无 API 速率限制或配额
+  - 支持高频搜索
+  - 可配置结果数量（1-100）
 
-- **🌐 Multi-Source Aggregation**
-  - Google, Bing, DuckDuckGo, Brave
-  - Wikipedia, GitHub, Stack Overflow
-  - 100+ search engines supported
+- **🌐 多源聚合**
+  - Google、Bing、DuckDuckGo、Brave
+  - Wikipedia、GitHub、Stack Overflow
+  - 支持 100+ 搜索引擎
 
-- **📊 Advanced Search Options**
-  - Time range filtering (day, week, month, year)
-  - Category filtering (general, images, videos, news, it, science, files, social)
-  - Language filtering
-  - Safe search levels
+- **📊 高级搜索选项**
+  - 时间范围过滤（天、周、月、年）
+  - 类别过滤（通用、图片、视频、新闻、IT、科学、文件、社交）
+  - 语言过滤
+  - 安全搜索级别
 
-- **🔌 MCP Integration**
-  - Seamless Claude Code integration
-  - stdio communication (no network ports for MCP)
-  - JSON-RPC 2.0 protocol
+- **🔌 MCP 集成**
+  - 与 Claude Code 无缝集成
+  - stdio 通信（MCP 不需要网络端口）
+  - JSON-RPC 2.0 协议
 
-- **🐳 Easy Deployment**
-  - Docker-based SearXNG deployment
-  - One-command installation
-  - Cross-platform support (Windows, macOS, Linux)
+- **🐳 简单部署**
+  - 基于 Docker 的 SearXNG 部署
+  - 一键安装
+  - 跨平台支持（Windows、macOS、Linux）
 
-- **🔒 Privacy First**
-  - No tracking, no logging
-  - Self-hosted, data never leaves your machine
-  - Anonymous search requests via SearXNG
+- **🔒 隐私优先**
+  - 无追踪，无记录
+  - 自托管，数据不离开你的机器
+  - 通过 SearXNG 匿名搜索
 
 ---
 
-## Quick Start
+## 快速开始
 
-Get started in 4 simple steps:
+4 个简单步骤即可开始：
 
-### Prerequisites
+### 前置要求
 
-- **Docker** (required): [Download](https://www.docker.com/products/docker-desktop)
-- **Node.js 18+** (required): [Download](https://nodejs.org/)
+- **Docker**（必需）：[下载](https://www.docker.com/products/docker-desktop)
+- **Node.js 18+**（必需）：[下载](https://nodejs.org/)
 
-### 1. Clone the Project
+### 1. 克隆项目
 
 ```bash
 git clone https://github.com/MaesHughes/wuxing-search-mcp.git
 cd wuxing-search-mcp
 ```
 
-### 2. Install Dependencies
+### 2. 安装依赖
 
 ```bash
 npm install
 ```
 
-### 3. Start SearXNG
+### 3. 启动 SearXNG
 
-**Option A: Using Docker Command (Recommended)**
+**方式 A：使用 Docker 命令（推荐）**
 
 ```bash
 docker run -d \
@@ -161,15 +161,15 @@ docker run -d \
   searxng/searxng:latest
 ```
 
-**Option B: Using Docker Compose**
+**方式 B：使用 Docker Compose**
 
 ```bash
 docker-compose up -d
 ```
 
-### 4. Configure Claude Code
+### 4. 配置 Claude Code
 
-Find your Claude Code config file:
+找到你的 Claude Code 配置文件：
 
 **Windows**:
 ```
@@ -181,7 +181,7 @@ Find your Claude Code config file:
 ~/.config/Claude/claude_desktop_config.json
 ```
 
-Add the following configuration (update the path to your actual project location):
+添加以下配置（更新路径为你的实际项目位置）：
 
 ```json
 {
@@ -199,192 +199,192 @@ Add the following configuration (update the path to your actual project location
 }
 ```
 
-**Important:**
-- Replace `D:\\path\\to\\wuxing-search-mcp\\src\\index.js` with your actual project path
-- Windows paths use double backslashes `\\`
-- macOS/Linux paths use forward slashes `/`
+**重要提示：**
+- 将 `D:\\path\\to\\wuxing-search-mcp\\src\\index.js` 替换为你的实际项目路径
+- Windows 路径使用双反斜杠 `\\`
+- macOS/Linux 路径使用正斜杠 `/`
 
-### 5. Restart Claude Code
+### 5. 重启 Claude Code
 
-Completely quit and reopen Claude Code.
+完全退出并重新打开 Claude Code。
 
 ---
 
-## Usage
+## 使用方法
 
-### Basic Search
+### 基础搜索
 
-Simply ask in Claude Code:
-
-```
-Search for the latest AI programming tools
-```
-
-### Advanced Search with Parameters
-
-You can specify parameters:
+在 Claude Code 中直接输入：
 
 ```
-Search for React tutorials from the past week, return 10 results
+请搜索最新的 AI 编程工具
 ```
 
-### Available Tools
+### 高级搜索参数
+
+你也可以指定参数：
+
+```
+请搜索最近一周的 React 教程，返回 10 条结果
+```
+
+### 可用工具
 
 #### 1. web_search
 
-Execute web searches and return results.
+执行网页搜索并返回结果。
 
-| Parameter | Description | Required | Default |
-|-----------|-------------|----------|---------|
-| `query` | Search keywords | Yes | - |
-| `max_results` | Number of results (1-100) | No | 20 |
-| `category` | Search category | No | general |
-| `language` | Language code | No | all |
-| `time_range` | Time range filter | No | none |
-| `safesearch` | Safe search level (0-2) | No | 1 |
+| 参数 | 说明 | 必需 | 默认值 |
+|------|------|------|--------|
+| `query` | 搜索关键词 | 是 | - |
+| `max_results` | 返回结果数量（1-100） | 否 | 20 |
+| `category` | 搜索类别 | 否 | general |
+| `language` | 语言代码 | 否 | all |
+| `time_range` | 时间范围过滤器 | 否 | none |
+| `safesearch` | 安全搜索级别（0-2） | 否 | 1 |
 
-**Category Options:**
-- `general` - General search
-- `images` - Image search
-- `videos` - Video search
-- `news` - News search
-- `it` - IT & Technology
-- `science` - Science
-- `files` - Files
-- `social` - Social media
+**类别选项：**
+- `general` - 通用搜索
+- `images` - 图片搜索
+- `videos` - 视频搜索
+- `news` - 新闻搜索
+- `it` - IT 技术
+- `science` - 科学
+- `files` - 文件
+- `social` - 社交媒体
 
-**Time Range Options:**
-- `day` - Past 24 hours
-- `week` - Past week
-- `month` - Past month
-- `year` - Past year
-- `none` - No time filter
+**时间范围选项：**
+- `day` - 过去 24 小时
+- `week` - 过去一周
+- `month` - 过去一月
+- `year` - 过去一年
+- `none` - 无时间过滤
 
 #### 2. get_server_info
 
-Get search server status information. No parameters.
+获取搜索服务器状态信息。无参数。
 
-### Usage Examples
+### 使用示例
 
-#### Example 1: Search for Documentation
-
-```
-Search for OpenCode official documentation and tutorials
-```
-
-#### Example 2: Search Latest Content
+#### 示例 1：搜索文档
 
 ```
-Search for articles about AI Agent from the past week
+请搜索 OpenCode 官方文档和教程
 ```
 
-#### Example 3: Search Specific Category
+#### 示例 2：搜索最新内容
 
 ```
-Search for Python machine learning library video tutorials
+请搜索最近一周关于 AI Agent 的文章
 ```
 
-#### Example 4: Check Server Status
+#### 示例 3：搜索特定类别
 
 ```
-Check search server status
+请搜索 Python 机器学习库的视频教程
+```
+
+#### 示例 4：查询服务器状态
+
+```
+查询搜索服务器状态
 ```
 
 ---
 
-## Management
+## 管理命令
 
-### NPM Commands
+### NPM 命令
 
 ```bash
-# View SearXNG status
+# 查看 SearXNG 状态
 npm run status:searxng
 
-# View SearXNG logs
+# 查看 SearXNG 日志
 npm run logs:searxng
 
-# Restart SearXNG
+# 重启 SearXNG
 npm run restart:searxng
 
-# Stop SearXNG
+# 停止 SearXNG
 npm run stop:searxng
 
-# Start SearXNG
+# 启动 SearXNG
 npm run start:searxng
 
-# Test search service
+# 测试搜索服务
 npm run test:searxng
 ```
 
-### Docker Commands
+### Docker 命令
 
 ```bash
-# View container status
+# 查看容器状态
 docker ps | grep wuxing-searxng
 
-# View real-time logs
+# 查看实时日志
 docker logs -f wuxing-searxng
 
-# Restart service
+# 重启服务
 docker restart wuxing-searxng
 
-# Stop service
+# 停止服务
 docker stop wuxing-searxng
 
-# Start service
+# 启动服务
 docker start wuxing-searxng
 
-# Delete and recreate
+# 删除并重建
 docker stop wuxing-searxng && docker rm wuxing-searxng
-# Then re-run the start command
+# 然后重新运行启动命令
 ```
 
 ---
 
-## Configuration
+## 配置选项
 
-Configure the MCP Server through environment variables:
+通过环境变量配置 MCP Server：
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `SEARXNG_URL` | SearXNG service address | http://localhost:18080 |
-| `MAX_RESULTS` | Default number of results | 20 |
-| `TIMEOUT` | Request timeout (ms) | 30000 |
+| 变量 | 说明 | 默认值 |
+|------|------|--------|
+| `SEARXNG_URL` | SearXNG 服务地址 | http://localhost:18080 |
+| `MAX_RESULTS` | 默认返回结果数 | 20 |
+| `TIMEOUT` | 请求超时时间（毫秒） | 30000 |
 
-Add these variables in the `env` field of your Claude Code configuration.
+在 Claude Code 配置的 `env` 字段中添加这些变量来自定义行为。
 
 ---
 
-## Troubleshooting
+## 故障排查
 
-### Problem 1: Search Tool Not Showing or Error
+### 问题 1：搜索工具不显示或报错
 
-**Checklist:**
+**检查清单：**
 
-1. ✅ Is SearXNG container running?
+1. ✅ SearXNG 容器是否运行？
    ```bash
    docker ps | grep wuxing-searxng
    ```
 
-2. ✅ Is SearXNG service healthy?
+2. ✅ SearXNG 服务是否正常？
    ```bash
    curl http://localhost:18080
    ```
 
-3. ✅ Is config file path correct (use absolute path)?
+3. ✅ 配置文件路径是否正确（使用绝对路径）？
 
-4. ✅ Is Node.js version >= 18?
+4. ✅ Node.js 版本是否 >= 18？
    ```bash
    node --version
    ```
 
-5. ✅ Has Claude Code been restarted?
+5. ✅ Claude Code 是否已重启？
 
-### Problem 2: SearXNG Container Won't Start
+### 问题 2：SearXNG 容器无法启动
 
-**Check:**
+**检查：**
 
-1. Is port 18080 occupied?
+1. 端口 18080 是否被占用？
    ```bash
    # Windows
    netstat -ano | findstr :18080
@@ -393,197 +393,197 @@ Add these variables in the `env` field of your Claude Code configuration.
    lsof -ti:18080
    ```
 
-2. Is Docker service running?
+2. Docker 服务是否运行？
 
-3. View container logs:
+3. 查看容器日志：
    ```bash
    docker logs wuxing-searxng
    ```
 
-**Solution:**
+**解决方案：**
 
 ```bash
-# Delete old container and recreate
+# 删除旧容器并重新创建
 docker stop wuxing-searxng && docker rm wuxing-searxng
-# Then re-run the start command
+# 然后重新运行启动命令
 ```
 
-### Problem 3: Search Returns Connection Error
+### 问题 3：搜索返回连接错误
 
-**Possible Cause:** SearXNG service not fully started
+**可能原因**：SearXNG 服务尚未完全启动
 
-**Solution:**
+**解决方案：**
 
 ```bash
-# Wait 5-10 seconds and retry
-# Or restart SearXNG
+# 等待 5-10 秒后重试
+# 或重启 SearXNG
 docker restart wuxing-searxng
 ```
 
-### Problem 4: Results Contain Old Content
+### 问题 4：结果包含旧内容
 
-**Cause:** Time filtering depends on search engine support
+**原因**：时间过滤依赖搜索引擎的支持
 
-**Solution:**
+**解决方案：**
 
-1. Use shorter time ranges (`day` instead of `week`)
-2. Add explicit time keywords in query (e.g., `January 2025`)
-3. Combine both approaches:
+1. 使用更短的时间范围（`day` 而非 `week`）
+2. 在 query 中添加明确的时间关键词（如 `2025年1月`）
+3. 结合使用：
    ```
-   Search for React new features in January 2025
+   请搜索 2025年1月的 React 新特性
    ```
 
 ---
 
-## Technical Architecture
+## 技术架构
 
-### MCP Server (Node.js)
+### MCP Server（Node.js）
 
-- **File:** `src/index.js`
-- **Dependencies:** @modelcontextprotocol/sdk, axios
-- **Communication:** stdio (standard input/output)
-- **Role:** Implement MCP protocol, forward requests to SearXNG
+- **文件**：`src/index.js`
+- **依赖**：@modelcontextprotocol/sdk, axios
+- **通信**：stdio（标准输入/输出）
+- **作用**：实现 MCP 协议，转发请求到 SearXNG
 
-### SearXNG (Python/Docker)
+### SearXNG（Python/Docker）
 
-- **Image:** searxng/searxng:latest
-- **Port:** 18080 (host) → 8080 (container)
-- **Config:** searxng/config/settings.yml
-- **Data:** searxng/data/ (cache)
-- **Role:** Aggregate 100+ search engines
+- **镜像**：searxng/searxng:latest
+- **端口**：18080（主机）→ 8080（容器）
+- **配置**：searxng/config/settings.yml
+- **数据**：searxng/data/（缓存）
+- **作用**：聚合 100+ 搜索引擎
 
-### Data Flow
+### 数据流
 
 ```
-User Input
+用户输入
   → Claude Code
   → MCP Server (stdio)
-  → HTTP request to SearXNG
-  → Parallel requests to search engines
-  → Aggregate results
-  → Return to user
+  → HTTP 请求到 SearXNG
+  → 并发请求到各搜索引擎
+  → 聚合结果
+  → 返回给用户
 ```
 
 ---
 
-## Project Structure
+## 项目结构
 
 ```
 wuxing-search-mcp/
-├── src/                  # MCP Server source
-│   └── index.js         # Main MCP Server implementation
-├── searxng/             # SearXNG configuration
+├── src/                  # MCP Server 源码
+│   └── index.js         # MCP Server 主实现
+├── searxng/             # SearXNG 配置
 │   ├── config/          # SearXNG settings.yml
-│   └── data/            # SearXNG cache (auto-created)
-├── assets/              # Documentation images
-│   └── banner.png       # Project banner
-├── package.json         # NPM package configuration
-├── docker-compose.yml   # Docker Compose configuration
-├── install.sh           # Linux/Mac installation script
-├── install.ps1          # Windows installation script
-├── README.md            # This file (English)
-├── README.zh-CN.md      # Chinese version
-└── INSTALL.md           # Detailed installation guide
+│   └── data/            # SearXNG 缓存（自动创建）
+├── assets/              # 文档图片
+│   └── banner.png       # 项目横幅
+├── package.json         # NPM 包配置
+├── docker-compose.yml   # Docker Compose 配置
+├── install.sh           # Linux/Mac 安装脚本
+├── install.ps1          # Windows 安装脚本
+├── README.md            # 英文版
+├── README.zh-CN.md      # 中文版（本文件）
+└── INSTALL.md           # 详细安装指南
 ```
 
 ---
 
-## FAQ
+## 常见问题
 
-### Q: Why is Docker required?
+### Q: 为什么需要 Docker？
 
-**A:** SearXNG is a Python project with 50+ Python package dependencies. Docker provides:
-- Avoid complex manual dependency installation
-- Environment isolation
-- Simplified deployment and updates
+**A**: SearXNG 是 Python 项目，依赖 50+ 个 Python 包。Docker 提供：
+- 避免复杂的手动依赖安装
+- 环境隔离
+- 简化部署和更新
 
-### Q: Can I skip Docker?
+### Q: 可以不用 Docker 吗？
 
-**A:** Theoretically yes, but not recommended. You would need to:
-1. Install Python 3.14
-2. Manually install 50+ Python dependencies
-3. Configure Python environment
+**A**: 理论上可以，但不推荐。你需要：
+1. 安装 Python 3.14
+2. 手动安装 50+ Python 依赖
+3. 配置 Python 环境
 
-The Docker approach is much simpler and more reliable.
+Docker 方案更简单可靠。
 
-### Q: Are there search limits?
+### Q: 搜索有限额吗？
 
-**A:** No! This is the core advantage of this project:
-- Completely self-hosted
-- No API call limits
-- No request rate limits
+**A**: 没有！这是本项目的核心优势：
+- 完全自托管
+- 无 API 调用限制
+- 无请求速率限制
 
-### Q: Which search engines are supported?
+### Q: 支持哪些搜索引擎？
 
-**A:** SearXNG supports 100+ search engines, including:
-- **General:** Brave, DuckDuckGo, Google, Bing
-- **Encyclopedia:** Wikipedia, Brave Encyclopedia
-- **Tech:** GitHub, Stack Overflow, NPM
-- **Video:** YouTube, Dailymotion, Vimeo
-- **Files:** KickassTorrent, 1337x
-- And many more...
+**A**: SearXNG 支持 100+ 搜索引擎，包括：
+- **通用**：Brave、DuckDuckGo、Google、Bing
+- **百科**：Wikipedia、Brave Encyclopedia
+- **技术**：GitHub、Stack Overflow、NPM
+- **视频**：YouTube、Dailymotion、Vimeo
+- **文件**：KickassTorrent、1337x
+- 等等...
 
-### Q: How is search quality?
+### Q: 搜索质量如何？
 
-**A:** Depends on enabled search engines. Default configuration includes mainstream search engines with good quality. To adjust, edit `searxng/config/settings.yml`.
-
----
-
-## Contributing
-
-We welcome contributions from the community! Here's how you can help:
-
-1. **Fork** the repository
-2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
-3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
-4. **Push** to the branch (`git push origin feature/amazing-feature`)
-5. **Open** a Pull Request
-
-### Ways to Contribute
-
-- Improve search engine configurations
-- Add new features to MCP Server
-- Report bugs and issues
-- Suggest new features
-- Improve documentation
-- Share your feedback
+**A**: 取决于启用的搜索引擎。默认配置已包含主流搜索引擎，质量较好。如需调整，可编辑 `searxng/config/settings.yml`。
 
 ---
 
-## Resources
+## 贡献
 
-### 📚 Documentation
-- [Installation Guide](INSTALL.md) - Detailed installation instructions
-- [SearXNG Documentation](https://docs.searxng.org/) - Official SearXNG docs
-- [MCP Specification](https://modelcontextprotocol.io/) - Model Context Protocol
+欢迎社区贡献！你可以这样帮助我们：
 
-### 🌐 Official Website
-- [Wuxing Codes Blog](https://blog.wuxingcodes.com/) - Latest updates and tutorials
+1. **Fork** 本仓库
+2. **创建** 功能分支（`git checkout -b feature/amazing-feature`）
+3. **提交** 更改（`git commit -m 'Add amazing feature'`）
+4. **推送** 到分支（`git push origin feature/amazing-feature`）
+5. **打开** Pull Request
 
-### 💬 Community
-- [GitHub Issues](https://github.com/MaesHughes/wuxing-search-mcp/issues) - Report bugs
-- [GitHub Discussions](https://github.com/MaesHughes/wuxing-search-mcp/discussions) - Ask questions
+### 贡献方式
+
+- 改进搜索引擎配置
+- 为 MCP Server 添加新功能
+- 报告 bug 和问题
+- 建议新功能
+- 改进文档
+- 分享你的反馈
 
 ---
 
-## License
+## 资源
 
-[MIT License](LICENSE) - see [LICENSE](LICENSE) file for details.
+### 📚 文档
+- [安装指南](INSTALL.md) - 详细安装说明
+- [SearXNG 文档](https://docs.searxng.org/) - SearXNG 官方文档
+- [MCP 规范](https://modelcontextprotocol.io/) - 模型上下文协议
+
+### 🌐 官方网站
+- [Wuxing Codes 博客](https://blog.wuxingcodes.com/) - 最新更新和教程
+
+### 💬 社区
+- [GitHub Issues](https://github.com/MaesHughes/wuxing-search-mcp/issues) - 报告问题
+- [GitHub Discussions](https://github.com/MaesHughes/wuxing-search-mcp/discussions) - 提问
 
 ---
 
-## Acknowledgments
+## 许可证
 
-- Built on top of [SearXNG](https://searxng.org/) - An open-source metasearch engine
-- Built for the [Claude Code](https://claude.ai/code) community
-- Part of the [Wuxing Codes](https://blog.wuxingcodes.com/) ecosystem
+[MIT License](LICENSE) - 详见 [LICENSE](LICENSE) 文件。
+
+---
+
+## 致谢
+
+- 基于开源项目 [SearXNG](https://searxng.org/) 构建
+- 为 [Claude Code](https://claude.ai/code) 社区打造
+- 属于 [Wuxing Codes](https://blog.wuxingcodes.com/) 生态系统的一部分
 
 ---
 
 <div align="center">
 
-**Made with ❤️ by the Wuxing team**
+**由 Wuxing 团队用 ❤️ 制作**
 
-**⭐ Star us on GitHub — it helps!**
+**⭐ 在 GitHub 上给我们加星 —— 这对我们很有帮助！**
 
 </div>
