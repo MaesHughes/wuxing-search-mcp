@@ -181,14 +181,44 @@ Find your Claude Code config file:
 ~/.config/Claude/claude_desktop_config.json
 ```
 
-Add the following configuration (update the path to your actual project location):
+### Step 1: Get Your Project Path
+
+Run the following command in your project directory to get the absolute path:
+
+**Windows (PowerShell):**
+```powershell
+Resolve-Path src\index.js
+```
+
+**Windows (Git Bash / Bash):**
+```bash
+pwd -W && echo "/src/index.js"
+# Or manually combine: $(pwd -W)/src/index.js
+```
+
+**macOS / Linux:**
+```bash
+pwd && echo "/src/index.js"
+# Or manually combine: $(pwd)/src/index.js
+```
+
+### Step 2: Add Configuration
+
+Add the following configuration to your config file. **⚠️ Make sure to replace `YOUR_FULL_PATH_HERE` with the actual path from the step above:**
+
+#### Windows Configuration Example
 
 ```json
 {
   "mcpServers": {
     "wuxing-search": {
-      "command": "node",
-      "args": ["D:\\path\\to\\wuxing-search-mcp\\src\\index.js"],
+      "type": "stdio",
+      "command": "cmd",
+      "args": [
+        "/c",
+        "node",
+        "D:\\\\indieHacker\\\\AI\\\\tools-series\\\\MCP\\\\wuxing-search\\\\src\\\\index.js"
+      ],
       "env": {
         "SEARXNG_URL": "http://localhost:18080",
         "MAX_RESULTS": "20",
@@ -199,10 +229,43 @@ Add the following configuration (update the path to your actual project location
 }
 ```
 
-**Important:**
-- Replace `D:\\path\\to\\wuxing-search-mcp\\src\\index.js` with your actual project path
-- Windows paths use double backslashes `\\`
-- macOS/Linux paths use forward slashes `/`
+#### macOS / Linux Configuration Example
+
+```json
+{
+  "mcpServers": {
+    "wuxing-search": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "/home/username/wuxing-search-mcp/src/index.js"
+      ],
+      "env": {
+        "SEARXNG_URL": "http://localhost:18080",
+        "MAX_RESULTS": "20",
+        "TIMEOUT": "30000"
+      }
+    }
+  }
+}
+```
+
+**Configuration Reference:**
+
+| Option | Windows | macOS/Linux | Description |
+|--------|---------|-------------|-------------|
+| `type` | `"stdio"` | `"stdio"` | Communication protocol type |
+| `command` | `"cmd"` | `"node"` | Windows uses cmd wrapper |
+| `args` | `["/c", "node", "path..."]` | `["path..."]` | Must use absolute path |
+| `env.SEARXNG_URL` | SearXNG service address | - | Default: `http://localhost:18080` |
+| `env.MAX_RESULTS` | Default result count | - | Default: 20, range 1-100 |
+| `env.TIMEOUT` | Request timeout (ms) | - | Default: 30000 |
+
+**⚠️ Important Notes:**
+- Windows backslashes must be escaped as double backslashes `\\\\` (JSON format requirement)
+- Or use forward slashes `/` (also works on Windows)
+- Path must be absolute - relative paths will not work
+- Completely restart Claude Code after modifying configuration
 
 ### 5. Restart Claude Code
 

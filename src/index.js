@@ -328,14 +328,15 @@ async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
 
-  // stderr 输出启动信息（不影响 MCP 通信）
-  console.error('='.repeat(50));
-  console.error('Wuxing Search MCP Server 已启动');
-  console.error(`环境变量 SEARXNG_URL: ${process.env.SEARXNG_URL || '未设置'}`);
-  console.error(`后端 SearXNG 地址: ${CONFIG.searxngUrl}`);
-  console.error(`最大结果数: ${CONFIG.maxResults}`);
-  console.error(`超时时间: ${CONFIG.timeout}ms`);
-  console.error('='.repeat(50));
+  // 启动信息已禁用，确保 MCP 协议通信正常
+  // 如需调试，可取消注释以下行：
+  // console.error('='.repeat(50));
+  // console.error('Wuxing Search MCP Server 已启动');
+  // console.error(`环境变量 SEARXNG_URL: ${process.env.SEARXNG_URL || '未设置'}`);
+  // console.error(`后端 SearXNG 地址: ${CONFIG.searxngUrl}`);
+  // console.error(`最大结果数: ${CONFIG.maxResults}`);
+  // console.error(`超时时间: ${CONFIG.timeout}ms`);
+  // console.error('='.repeat(50));
 }
 
 main().catch((error) => {

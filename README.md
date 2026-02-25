@@ -181,14 +181,44 @@ docker-compose up -d
 ~/.config/Claude/claude_desktop_config.json
 ```
 
-添加以下配置（更新路径为你的实际项目位置）：
+### 第一步：获取你的项目路径
+
+在项目目录下运行以下命令获取绝对路径：
+
+**Windows (PowerShell):**
+```powershell
+Resolve-Path src\index.js
+```
+
+**Windows (Git Bash / Bash):**
+```bash
+pwd -W && echo "/src/index.js"
+# 或手动拼接：$(pwd -W)/src/index.js
+```
+
+**macOS / Linux:**
+```bash
+pwd && echo "/src/index.js"
+# 或手动拼接：$(pwd)/src/index.js
+```
+
+### 第二步：添加配置
+
+在配置文件中添加以下配置，**⚠️ 务必替换 `YOUR_FULL_PATH_HERE` 为上一步获取的实际路径**：
+
+#### Windows 配置示例
 
 ```json
 {
   "mcpServers": {
     "wuxing-search": {
-      "command": "node",
-      "args": ["D:\\path\\to\\wuxing-search-mcp\\src\\index.js"],
+      "type": "stdio",
+      "command": "cmd",
+      "args": [
+        "/c",
+        "node",
+        "D:\\\\indieHacker\\\\AI\\\\tools-series\\\\MCP\\\\wuxing-search\\\\src\\\\index.js"
+      ],
       "env": {
         "SEARXNG_URL": "http://localhost:18080",
         "MAX_RESULTS": "20",
@@ -199,10 +229,43 @@ docker-compose up -d
 }
 ```
 
-**重要提示：**
-- 将 `D:\\path\\to\\wuxing-search-mcp\\src\\index.js` 替换为你的实际项目路径
-- Windows 路径使用双反斜杠 `\\`
-- macOS/Linux 路径使用正斜杠 `/`
+#### macOS / Linux 配置示例
+
+```json
+{
+  "mcpServers": {
+    "wuxing-search": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "/home/username/wuxing-search-mcp/src/index.js"
+      ],
+      "env": {
+        "SEARXNG_URL": "http://localhost:18080",
+        "MAX_RESULTS": "20",
+        "TIMEOUT": "30000"
+      }
+    }
+  }
+}
+```
+
+**配置说明：**
+
+| 配置项 | Windows | macOS/Linux | 说明 |
+|--------|---------|-------------|------|
+| `type` | `"stdio"` | `"stdio"` | 通信协议类型 |
+| `command` | `"cmd"` | `"node"` | Windows 使用 cmd 包装器 |
+| `args` | `["/c", "node", "路径..."]` | `["路径..."]` | 路径必须使用绝对路径 |
+| `env.SEARXNG_URL` | SearXNG 服务地址 | - | 默认 `http://localhost:18080` |
+| `env.MAX_RESULTS` | 默认返回结果数 | - | 默认 20，范围 1-100 |
+| `env.TIMEOUT` | 请求超时时间（毫秒） | - | 默认 30000 |
+
+**⚠️ 重要提示：**
+- Windows 路径中的反斜杠必须转义为双反斜杠 `\\\\`（JSON 格式要求）
+- 或者使用正斜杠 `/`（Windows 也支持）
+- 路径必须是绝对路径，相对路径无法工作
+- 修改配置后需要完全重启 Claude Code 才能生效
 
 ### 5. 重启 Claude Code
 
