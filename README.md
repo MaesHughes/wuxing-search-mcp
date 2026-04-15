@@ -217,7 +217,7 @@ pwd && echo "/src/index.js"
       "args": [
         "/c",
         "node",
-        "D:\\\\indieHacker\\\\AI\\\\tools-series\\\\MCP\\\\wuxing-search\\\\src\\\\index.js"
+        "D:\\\\path\\\\to\\\\wuxing-search-mcp\\\\src\\\\index.js"
       ],
       "env": {
         "SEARXNG_URL": "http://localhost:18080",
