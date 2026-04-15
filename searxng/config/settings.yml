@@ -1,7 +1,12 @@
 # SearXNG 配置文件 - Wuxing Search
+# 版本: 2026.1.24+eea189286 (219 个引擎)
+# 引擎选择策略：由 MCP Server 通过 API engines 参数动态指定
+# settings.yml 保持默认配置，避免因引擎 network 缺失导致启动崩溃
 use_default_settings: true
+
 general:
   instance_name: "Wuxing Search"
+
 server:
   port: 8080
   bind_address: "0.0.0.0"
@@ -10,6 +15,7 @@ server:
   public_instance: false
   method: "POST"
   image_proxy: false
+
 search:
   formats:
     - html
@@ -21,13 +27,3 @@ outgoing:
   request_timeout: 10.0
   pool_connections: 100
   pool_maxsize: 20
-
-engines:
-  - name: google
-    timeout: 10.0
-  - name: bing
-    timeout: 10.0
-  - name: duckduckgo
-    timeout: 10.0
-  - name: baidu
-    timeout: 10.0

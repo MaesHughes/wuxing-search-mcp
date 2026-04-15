@@ -1,8 +1,8 @@
 {
   "name": "@maeshughes/wuxing-search-mcp",
-  "version": "1.0.0",
+  "version": "3.0.0",
   "type": "module",
-  "description": "基于 SearXNG 的无限制搜索 MCP Server，专为课程开发场景设计",
+  "description": "AI 搜索引擎 MCP Server — 基于 SearXNG 智能搜索 + 网页抓取 + LLM 总结，带来源引用",
   "main": "src/index.js",
   "bin": {
     "wuxing-search": "./src/index.js"
@@ -43,6 +43,8 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.25.3",
-    "axios": "^1.13.2"
+    "@mozilla/readability": "^0.6.0",
+    "axios": "^1.13.2",
+    "jsdom": "^29.0.2"
   }
 }

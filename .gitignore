@@ -49,3 +49,26 @@ NUL
 QUICKSTART.md
 opensource/
 D:indieHackerAItools-seriesMCPwuxing-searchsearxng-config.json
+
+# Competitor research (cloned repos, analysis notes)
+.competitor-research/
+github/
+
+# Debug / test artifacts
+.playwright-mcp/
+yanzh/
+yanzheng/
+engine-test-report*.json
+engine-test-report*.md
+test-all-disabled.cjs
+test-current-engines.cjs
+test-engines.cjs
+test-engines.sh
+
+# Internal documents (handoff, research planning)
+HANDOFF-*.md
+调研-*.md
+
+# Misc temp files
+nul
+[0-9].md
