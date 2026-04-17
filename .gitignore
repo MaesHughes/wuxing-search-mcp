@@ -34,7 +34,8 @@ desktop.ini
 .mcp-config.json
 
 # Claude/Project internal files
-.claude/
+.claude/*
+!.claude/commands/
 
 # Build output
 dist/
