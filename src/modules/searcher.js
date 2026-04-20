@@ -42,30 +42,91 @@ export function normalizeUrl(url) {
 
 /**
  * 调用 SearXNG API 执行搜索
+ * 支持单类别和多类别搜索（category 可以是字符串或数组）
  *
  * @param {string} query - 搜索关键词
  * @param {object} options
  * @param {number} options.max_results - 最大返回数（默认 20）
- * @param {string} options.category - 搜索类别（general/images/videos/news/science/it/files等）
+ * @param {string|string[]} options.category - 搜索类别，可以是字符串或数组
  * @param {string} options.language - 语言代码（zh/en/all）
  * @param {string} options.time_range - 时间范围（day/week/month/year/none）
  * @param {number} options.safesearch - 安全搜索级别（0-2）
  * @param {string} options.engines - 指定引擎（逗号分隔）
- * @returns {Promise<object>} { success, query, results: [{index, title, url, content, engine, score}], warnings? }
+ * @returns {Promise<object>} { success, query, results, categories?, warnings? }
  */
 export async function search(query, options = {}) {
   if (!query || !query.trim()) {
     return { success: false, query: '', results: [], warnings: ['查询不能为空'] };
   }
 
+  // 处理 category 参数：支持字符串或数组
+  let categories = options.category || 'general';
+  if (typeof categories === 'string' && categories.startsWith('[')) {
+    try { categories = JSON.parse(categories); } catch (e) { /* 保持原样 */ }
+  }
+  const categoryList = Array.isArray(categories) ? categories : [categories];
+
+  // 单类别直接搜，多类别并行搜后聚合
+  if (categoryList.length === 1) {
+    return await singleSearch(query, categoryList[0], options);
+  }
+
+  // 多类别搜索
+  const maxResults = options.max_results || SEARCH_CONFIG.maxResults;
+  const perCategory = Math.ceil(maxResults / categoryList.length);
+
+  const results = await Promise.all(
+    categoryList.map(cat =>
+      singleSearch(query, cat, { ...options, max_results: perCategory })
+        .catch(err => {
+          console.error(`[SEARCH] 类别 ${cat} 搜索失败: ${err.message}`);
+          return { success: false, results: [] };
+        })
+    )
+  );
+
+  // 聚合结果，去重，排序
+  const allResults = [];
+  const seen = new Map();
+  for (const r of results) {
+    if (!r.results) continue;
+    for (const item of r.results) {
+      if (!item.url) continue;
+      const normUrl = normalizeUrl(item.url);
+      if (!seen.has(normUrl)) {
+        seen.set(normUrl, item);
+        allResults.push(item);
+      }
+    }
+  }
+
+  allResults.sort((a, b) => (b.score || 0) - (a.score || 0));
+  const limited = allResults.slice(0, maxResults).map((item, index) => ({ ...item, index: index + 1 }));
+
+  console.error(`[SEARCH] "${query}" 多类别[${categoryList.join(',')}] → ${allResults.length} 聚合, ${limited.length} 返回`);
+
+  return {
+    success: true,
+    query,
+    categories: categoryList,
+    total_raw: allResults.length,
+    returned: limited.length,
+    results: limited,
+  };
+}
+
+/**
+ * 单类别搜索（内部函数）
+ */
+async function singleSearch(query, category, options = {}) {
   const params = {
     q: query.trim(),
     format: 'json',
     language: options.language || 'all',
   };
 
-  if (options.category && options.category !== 'general') {
-    params.categories = options.category;
+  if (category && category !== 'general') {
+    params.categories = category;
   }
   if (options.time_range && options.time_range !== 'none') {
     params.time_range = options.time_range;
