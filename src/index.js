@@ -141,21 +141,43 @@ Research Brief 包含：
   },
   {
     name: 'web_search',
-    description: `快速网页搜索，返回搜索结果列表（标题+摘要+链接）。
+    description: `执行网页搜索，返回搜索结果列表。
 
-【什么时候用】
-- 查 API 用法、函数文档
-- 找具体链接、包名、配置项
-- 查错误信息、报错原因
-- 搜索图片/视频
-- 只需要搜索结果摘要，不需要全文
+支持多源专业搜索，根据搜索目标选择合适的 category：
 
-【什么时候不要用】
-- 需要深入理解话题（用 wuxing_search）
-- 需要写文章/报告（用 wuxing_search）
+类别说明：
+- general: 通用网页搜索（默认）
+- science: 学术论文、研究（arxiv, google scholar, pubmed等）
+- it: IT技术（github, stackoverflow, npm, pypi, docker hub等）
+- social media: 社交媒体讨论（lemmy, mastodon等）
+- news: 新闻资讯
+- images: 图片搜索
+- videos: 视频搜索
+- files: 文件搜索
 
-【返回内容】
-搜索结果列表，每条包含 title/url/content(摘要)/engine/score。`,
+使用建议：
+- 搜索论文时使用 category: science
+- 搜索代码/技术问题时使用 category: it
+- 查看社区讨论时使用 category: social media
+- 全面搜索（论文+代码+讨论+资讯）使用 category: ['science', 'it', 'social media', 'general']
+
+多类别搜索：category 可以是数组，如 ['science', 'it']，会同时搜索多个类别并聚合结果
+
+参数说明：
+- query: 搜索关键词（必需）
+- max_results: 返回结果数量，默认 20，最大 100
+- category: 搜索类别，可以是字符串或数组（默认 general）
+- language: 搜索语言代码（如：zh、en、all），默认 all
+- time_range: 时间范围，可选值：day, week, month, year, none（默认）
+- safesearch: 安全搜索级别，可选值：0, 1, 2（默认 1）
+
+返回格式：
+- title: 结果标题
+- url: 结果链接
+- content: 结果摘要
+- engine: 搜索引擎来源
+- score: 相关性评分
+- search_category: 结果来源的类别（多类别搜索时）`,
     inputSchema: {
       type: 'object',
       properties: {
@@ -171,9 +193,12 @@ Research Brief 包含：
           maximum: 100,
         },
         category: {
-          type: 'string',
-          description: '搜索类别',
-          enum: ['general', 'images', 'videos', 'files', 'it', 'map', 'music', 'science', 'social', 'news'],
+          anyOf: [
+            { type: 'string' },
+            { type: 'array', items: { type: 'string' } }
+          ],
+          description: '搜索类别，可以是单个类别或类别数组（用于全面搜索）。可选值：general, science, it, social media, news, images, videos, files。多类别搜索示例：["science", "it", "social media", "general"]',
+          default: 'general',
         },
         language: {
           type: 'string',
@@ -206,6 +231,159 @@ Research Brief 包含：
     },
   },
 ];
+
+// ==================== 搜索函数 ====================
+
+/**
+ * 调用 SearXNG 搜索 API
+ * 支持单类别或多类别搜索
+ */
+async function searchWithSearXNG(params) {
+  const {
+    query,
+    max_results = CONFIG.maxResults,
+    category = 'general',
+    language = 'all',
+    time_range = 'none',
+    safesearch = 1,
+  } = params;
+
+  // 处理类别参数：支持字符串或数组
+  // 如果是 JSON 字符串（MCP 可能序列化数组），先解析
+  let parsedCategory = category;
+  if (typeof category === 'string' && category.startsWith('[')) {
+    try {
+      parsedCategory = JSON.parse(category);
+    } catch (e) {
+      // 不是有效的 JSON，保持原样
+    }
+  }
+  const categories = Array.isArray(parsedCategory) ? parsedCategory : [parsedCategory];
+
+  // 如果是单一类别且为 general，直接搜索
+  if (categories.length === 1 && categories[0] === 'general') {
+    return await singleCategorySearch({ query, max_results, category: 'general', language, time_range, safesearch });
+  }
+
+  // 多类别搜索：并行搜索多个类别，然后聚合结果
+  console.error(`[DEBUG] 多类别搜索: ${categories.join(', ')}`);
+
+  const searchPromises = categories.map(cat =>
+    singleCategorySearch({ query, max_results: Math.ceil(max_results / categories.length), category: cat, language, time_range, safesearch })
+      .catch(error => {
+        console.error(`[ERROR] 类别 ${cat} 搜索失败:`, error.message);
+        return { success: false, category: cat, results: [] };
+      })
+  );
+
+  const results = await Promise.all(searchPromises);
+
+  // 聚合结果
+  const allResults = [];
+  let globalIndex = 1;
+
+  for (const result of results) {
+    if (result.success && result.results) {
+      for (const item of result.results) {
+        allResults.push({
+          ...item,
+          index: globalIndex++,
+          search_category: result.category,
+        });
+      }
+    }
+  }
+
+  // 按相关性排序并限制数量
+  allResults.sort((a, b) => (b.score || 0) - (a.score || 0));
+  const limitedResults = allResults.slice(0, max_results);
+
+  return {
+    success: true,
+    query,
+    categories,
+    total: allResults.length,
+    returned: limitedResults.length,
+    results: limitedResults,
+  };
+}
+
+/**
+ * 单类别搜索
+ */
+async function singleCategorySearch(params) {
+  const {
+    query,
+    max_results = CONFIG.maxResults,
+    category = 'general',
+    language = 'all',
+    time_range = 'none',
+    safesearch = 1,
+  } = params;
+
+  // 构建请求参数
+  const searchParams = {
+    q: query,
+    format: 'json',
+    language,
+  };
+
+  // 添加可选参数
+  if (category && category !== 'general') {
+    searchParams.categories = category;
+  }
+  if (time_range && time_range !== 'none') {
+    searchParams.time_range = time_range;
+  }
+  if (safesearch !== undefined) {
+    searchParams.safesearch = safesearch;
+  }
+
+  try {
+    console.error(`[DEBUG] 搜索类别: ${category}`);
+    console.error(`[DEBUG] 搜索参数:`, JSON.stringify(searchParams));
+
+    const response = await axios.get(`${CONFIG.searxngUrl}/search`, {
+      params: searchParams,
+      timeout: CONFIG.timeout,
+      headers: {
+        'Accept': 'application/json',
+        'User-Agent': 'Wuxing-Search-MCP/1.0',
+      },
+    });
+
+    console.error(`[DEBUG] ${category} 类别结果数: ${response.data.results?.length || 0}`);
+
+    // 处理返回结果
+    const results = response.data.results || [];
+
+    return {
+      success: true,
+      category,
+      total: results.length,
+      results: results.map((item, index) => ({
+        index: index + 1,
+        title: item.title || '无标题',
+        url: item.url || '',
+        content: item.content || '',
+        engine: item.engine || 'unknown',
+        score: item.score || 0,
+        category: item.category || category,
+        publishedDate: item.publishedDate || null,
+      })),
+    };
+  } catch (error) {
+    // 安全的错误信息（避免循环引用）
+    const safeError = {
+      message: error.message,
+      code: error.code,
+      status: error.response?.status,
+      stack: error.stack?.split('\n')?.slice(0, 3)?.join('\n'),
+    };
+    console.error(`[ERROR] 类别 ${category} 搜索失败:`, JSON.stringify(safeError));
+    throw new Error(`搜索失败: ${error.message} (${error.code || 'UNKNOWN'})`);
+  }
+}
 
 // ==================== MCP Server 实现 ====================
 

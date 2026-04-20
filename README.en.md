@@ -77,12 +77,13 @@ Traditional search APIs have limitations:
                                                     ▼
                                             ┌───────────────────────────┐
                                             │   Search Engine Aggregator│
-                                            │   - Google               │
-                                            │   - Bing                 │
-                                            │   - DuckDuckGo           │
-                                            │   - Brave                │
-                                            │   - Wikipedia            │
-                                            │   - And 100+ more...     │
+                                            │   General: Google, Bing..│
+                                            │   Code: GitHub, HuggingFace│
+                                            │   Q&A: StackOverflow      │
+                                            │   Packages: npm, PyPI     │
+                                            │   Academic: arXiv         │
+                                            │   Community: HN, Reddit   │
+                                            │   And 100+ more...        │
                                             └───────────────────────────┘
 ```
 
@@ -98,8 +99,14 @@ Traditional search APIs have limitations:
   - Configurable result count (1-100)
 
 - **🌐 Multi-Source Aggregation**
-  - Google, Bing, DuckDuckGo, Brave
-  - Wikipedia, GitHub, Stack Overflow
+  - General: Google, Bing, DuckDuckGo, Baidu
+  - Code: GitHub, Hugging Face, GitLab
+  - Q&A: Stack Overflow
+  - Packages: npm, PyPI, crates.io, Docker Hub
+  - Academic: arXiv, Google Scholar, Semantic Scholar, PubMed
+  - Community: HackerNews, Reddit, Mastodon
+  - Docs: MDN
+  - News: Google News
   - 100+ search engines supported
 
 - **📊 Advanced Search Options**
@@ -578,12 +585,28 @@ The Docker approach is much simpler and more reliable.
 
 ### Q: Which search engines are supported?
 
-**A:** SearXNG supports 100+ search engines, including:
-- **General:** Brave, DuckDuckGo, Google, Bing
-- **Encyclopedia:** Wikipedia, Brave Encyclopedia
-- **Tech:** GitHub, Stack Overflow, NPM
-- **Video:** YouTube, Dailymotion, Vimeo
-- **Files:** KickassTorrent, 1337x
+**A:** SearXNG supports 245 search engines, with 89 enabled by default.
+
+**Currently Enabled (21 engines):**
+
+| Category | Search Engines |
+|----------|----------------|
+| **General** | Google, Bing, DuckDuckGo, Baidu |
+| **Code Repos** | GitHub, Hugging Face, GitLab |
+| **Q&A** | Stack Overflow |
+| **Packages** | npm, PyPI, crates.io, Docker Hub |
+| **Academic** | arXiv, Google Scholar, Semantic Scholar, PubMed |
+| **Community** | HackerNews, Reddit, Mastodon |
+| **Docs** | MDN Web Docs |
+| **News** | Google News |
+
+**Other Available Engines** (enable in config):
+- **Code:** Bitbucket, Codeberg, Gitea, SourceHut
+- **Packages:** RubyGems, Go, Hex, Packagist
+- **Social:** Lemmy
+- **Video:** YouTube, Vimeo, Bilibili
+- **Social:** Mastodon, Lemmy
+- **Video:** YouTube, Vimeo, Bilibili
 - And many more...
 
 ### Q: How is search quality?

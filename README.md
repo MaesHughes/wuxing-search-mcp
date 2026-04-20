@@ -76,13 +76,14 @@
                                                     │
                                                     ▼
                                             ┌───────────────────────────┐
-                                            │   搜索引擎聚合           │
-                                            │   - Google               │
-                                            │   - Bing                 │
-                                            │   - DuckDuckGo           │
-                                            │   - Brave                │
-                                            │   - Wikipedia            │
-                                            │   - 以及 100+ 更多...    │
+                                            │   搜索引擎聚合 (13+)      │
+                                            │   通用: Google, Bing...   │
+                                            │   代码: GitHub, HuggingFace│
+                                            │   问答: StackOverflow     │
+                                            │   包: npm, PyPI           │
+                                            │   学术: arXiv             │
+                                            │   社区: HN, Reddit        │
+                                            │   以及 100+ 更多...       │
                                             └───────────────────────────┘
 ```
 
@@ -98,8 +99,14 @@
   - 可配置结果数量（1-100）
 
 - **🌐 多源聚合**
-  - Google、Bing、DuckDuckGo、Brave
-  - Wikipedia、GitHub、Stack Overflow
+  - 通用：Google、Bing、DuckDuckGo、Baidu
+  - 代码：GitHub、Hugging Face、GitLab
+  - 问答：Stack Overflow
+  - 包：npm、PyPI、crates.io、Docker Hub
+  - 学术：arXiv、Google Scholar、Semantic Scholar、PubMed
+  - 社区：HackerNews、Reddit、Mastodon
+  - 文档：MDN
+  - 新闻：Google News
   - 支持 100+ 搜索引擎
 
 - **📊 高级搜索选项**
@@ -329,25 +336,37 @@ pwd && echo "/src/index.js"
 
 ### 使用示例
 
-#### 示例 1：搜索文档
+#### 示例 1：搜索开源项目
 
 ```
-请搜索 OpenCode 官方文档和教程
+请搜索 GitHub 上热门的 AI agent 项目
 ```
 
-#### 示例 2：搜索最新内容
+#### 示例 2：搜索技术问题
 
 ```
-请搜索最近一周关于 AI Agent 的文章
+在 Stack Overflow 上搜索 MCP 连接错误的解决方案
 ```
 
-#### 示例 3：搜索特定类别
+#### 示例 3：搜索学术论文
 
 ```
-请搜索 Python 机器学习库的视频教程
+请搜索 arXiv 上关于多智能体协作的最新论文
 ```
 
-#### 示例 4：查询服务器状态
+#### 示例 4：搜索 Python 库
+
+```
+在 PyPI 上搜索 LangChain agents 相关的包
+```
+
+#### 示例 5：搜索开发者讨论
+
+```
+请搜索 HackerNews 上关于 AI 编程的讨论
+```
+
+#### 示例 6：查询服务器状态
 
 ```
 查询搜索服务器状态
@@ -578,12 +597,26 @@ Docker 方案更简单可靠。
 
 ### Q: 支持哪些搜索引擎？
 
-**A**: SearXNG 支持 100+ 搜索引擎，包括：
-- **通用**：Brave、DuckDuckGo、Google、Bing
-- **百科**：Wikipedia、Brave Encyclopedia
-- **技术**：GitHub、Stack Overflow、NPM
-- **视频**：YouTube、Dailymotion、Vimeo
-- **文件**：KickassTorrent、1337x
+**A**: SearXNG 支持 245 个搜索引擎，默认启用 89 个。
+
+**当前已启用的 21 个引擎**：
+
+| 类别 | 搜索引擎 |
+|------|----------|
+| **通用搜索** | Google, Bing, DuckDuckGo, Baidu |
+| **代码仓库** | GitHub, Hugging Face, GitLab |
+| **技术问答** | Stack Overflow |
+| **包管理器** | npm, PyPI, crates.io, Docker Hub |
+| **学术论文** | arXiv, Google Scholar, Semantic Scholar, PubMed |
+| **开发者社区** | HackerNews, Reddit, Mastodon |
+| **开发文档** | MDN Web Docs |
+| **新闻源** | Google News |
+
+**其他可用引擎**（可在配置中启用）：
+- **代码**：Bitbucket, Codeberg, Gitea, SourceHut
+- **包管理**：RubyGems, Go, Hex, Packagist
+- **社交**：Lemmy
+- **视频**：YouTube, Vimeo, Bilibili
 - 等等...
 
 ### Q: 搜索质量如何？
