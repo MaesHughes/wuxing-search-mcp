@@ -24,6 +24,37 @@ search:
   max_results: 20
 
 outgoing:
-  request_timeout: 10.0
+  request_timeout: 6.0
+  max_request_timeout: 15.0
   pool_connections: 100
   pool_maxsize: 20
+  suspension_time: 600
+
+engines:
+  # === 高风险引擎（禁用） ===
+  - name: google
+    disabled: true
+  - name: startpage
+    disabled: true
+
+  # === 稳定的独立索引引擎（优先启用） ===
+  - name: brave
+    disabled: false
+  - name: mojeek
+    disabled: false
+
+  # === 通用搜索（稳定备选） ===
+  - name: duckduckgo
+    disabled: false
+  - name: yahoo
+    disabled: false
+  - name: qwant
+    disabled: false
+
+  # === 中文搜索引擎 ===
+  - name: 360search
+    disabled: false
+  - name: baidu kaifa
+    disabled: false
+  - name: sogou wechat
+    disabled: false

@@ -9,10 +9,21 @@ import axios from 'axios';
 
 // ==================== 配置 ====================
 
+// 公共 SearXNG 实例列表（fallback 用）
+const PUBLIC_INSTANCES = [
+  'https://searx.be',
+  'https://searxng.ch',
+  'https://search.mdosch.de',
+];
+
+const primaryUrl = process.env.SEARXNG_URL || 'http://localhost:18080';
+
 export const SEARCH_CONFIG = {
-  searxngUrl: process.env.SEARXNG_URL || 'http://localhost:18080',
+  searxngUrl: primaryUrl,
+  searxngUrls: [primaryUrl, ...PUBLIC_INSTANCES],
   maxResults: parseInt(process.env.MAX_RESULTS) || 20,
   timeout: parseInt(process.env.TIMEOUT) || 30000,
+  instanceTimeout: 8000,  // 单实例超时（fallback 时每个实例最多等 8s）
 };
 
 // ==================== URL 规范化 ====================
@@ -116,7 +127,33 @@ export async function search(query, options = {}) {
 }
 
 /**
+ * 向单个 SearXNG 实例发起搜索请求
+ * @returns {Promise<{response: object, url: string} | null>}
+ */
+async function tryInstance(baseUrl, params, timeout) {
+  try {
+    const response = await axios.get(`${baseUrl}/search`, {
+      params,
+      timeout,
+      headers: {
+        'Accept': 'application/json',
+        'User-Agent': 'Wuxing-Search-MCP/4.0',
+      },
+    });
+    const results = response.data.results || [];
+    if (results.length > 0) {
+      return { response, url: baseUrl };
+    }
+    // 结果为空视为失败，继续尝试下一个实例
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+/**
  * 单类别搜索（内部函数）
+ * 支持多实例 fallback：本地实例优先，失败后依次尝试公共实例
  */
 async function singleSearch(query, category, options = {}) {
   const params = {
@@ -139,16 +176,35 @@ async function singleSearch(query, category, options = {}) {
   }
 
   try {
-    const response = await axios.get(`${SEARCH_CONFIG.searxngUrl}/search`, {
-      params,
-      timeout: SEARCH_CONFIG.timeout,
-      headers: {
-        'Accept': 'application/json',
-        'User-Agent': 'Wuxing-Search-MCP/4.0',
-      },
-    });
+    // 多实例 fallback：依次尝试每个实例
+    let hitResult = null;
+    let usedUrl = SEARCH_CONFIG.searxngUrl;
 
-    const rawResults = response.data.results || [];
+    for (const url of SEARCH_CONFIG.searxngUrls) {
+      const result = await tryInstance(url, params, SEARCH_CONFIG.instanceTimeout);
+      if (result) {
+        hitResult = result.response;
+        usedUrl = result.url;
+        break;
+      }
+      console.error(`[FALLBACK] ${url} 无结果，尝试下一个实例`);
+    }
+
+    if (!hitResult) {
+      console.error(`[SEARCH] "${query}" 所有实例均无结果`);
+      return {
+        success: false,
+        query,
+        results: [],
+        warnings: ['所有 SearXNG 实例均无结果'],
+      };
+    }
+
+    if (usedUrl !== SEARCH_CONFIG.searxngUrl) {
+      console.error(`[FALLBACK] 使用公共实例: ${usedUrl}`);
+    }
+
+    const rawResults = hitResult.data.results || [];
     const maxResults = options.max_results || SEARCH_CONFIG.maxResults;
 
     // 去重（按规范化 URL）

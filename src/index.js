@@ -345,38 +345,36 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
       // ========== get_server_info ==========
       case 'get_server_info': {
-        try {
-          const response = await axios.get(`${SEARCH_CONFIG.searxngUrl}/config`, {
-            timeout: 5000,
-          });
+        const instances = SEARCH_CONFIG.searxngUrls;
+        const instanceStatuses = [];
 
-          return {
-            content: [{
-              type: 'text',
-              text: JSON.stringify({
-                status: 'connected',
-                server: { name: 'Wuxing Search MCP', version: '4.0.0', backend: 'SearXNG' },
-                backend: {
-                  url: SEARCH_CONFIG.searxngUrl,
-                  instance_name: response.data.instance_name || 'unknown',
-                  version: response.data.version || 'unknown',
-                },
-              }, null, 2),
-            }],
-          };
-        } catch (error) {
-          return {
-            content: [{
-              type: 'text',
-              text: JSON.stringify({
-                status: 'disconnected',
-                server: { name: 'Wuxing Search MCP', version: '4.0.0', backend: 'SearXNG' },
-                backend: { url: SEARCH_CONFIG.searxngUrl, error: error.message },
-                hint: '请确保 SearXNG 服务正在运行',
-              }, null, 2),
-            }],
-          };
+        for (const url of instances) {
+          try {
+            const response = await axios.get(`${url}/config`, { timeout: 5000 });
+            instanceStatuses.push({
+              url,
+              status: 'connected',
+              instance_name: response.data.instance_name || 'unknown',
+              version: response.data.version || 'unknown',
+            });
+          } catch {
+            instanceStatuses.push({ url, status: 'disconnected' });
+          }
         }
+
+        const primaryConnected = instanceStatuses[0]?.status === 'connected';
+
+        return {
+          content: [{
+            type: 'text',
+            text: JSON.stringify({
+              status: primaryConnected ? 'connected' : 'degraded',
+              server: { name: 'Wuxing Search MCP', version: '4.1.0', backend: 'SearXNG' },
+              instances: instanceStatuses,
+              fallback_enabled: instances.length > 1,
+            }, null, 2),
+          }],
+        };
       }
 
       default:
